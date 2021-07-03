@@ -4,6 +4,9 @@ import usePlayer from '../hooks/usePlayer'
 import 'video.js/dist/video-js.min.css'
 
 // const socket = io('http://localhost:3003')
+
+const web_prod = 'http://178.128.52.193'
+const web_local = 'http://localhost'
 export default function Wss() {
   const [socket, setSocket] = useState(null)
   const [id, setId] = useState('')
@@ -23,7 +26,7 @@ export default function Wss() {
   })
 
   useEffect(() => {
-    const tes = io('http://localhost:3003')
+    const tes = io(web_prod + ':3003')
     setSocket(tes)
   }, [])
 

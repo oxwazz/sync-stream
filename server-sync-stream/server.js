@@ -3,7 +3,7 @@ const web_local = 'http://localhost'
 const server = require('http').createServer()
 const io = require('socket.io')(server, {
   cors: {
-    origin: web_prod + ':3000',
+    origin: 'http://178.128.52.193:3000',
   },
 })
 let admin = ''

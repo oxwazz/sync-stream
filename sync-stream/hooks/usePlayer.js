@@ -5,6 +5,16 @@ import 'videojs-http-source-selector'
 
 // eslint-disable-next-line import/prefer-default-export
 const usePlayer = ({ src, controls, autoplay, socket }) => {
+  const videoRef = useRef(null)
+  const [player, setPlayer] = useState(null)
+  let hostId = ''
+  let userId = ''
+
+  const isCurrentUserHost = () => {
+    if (!socket) return
+    return hostId === socket.id
+  }
+
   const options = {
     fill: true,
     fluid: true,
@@ -17,13 +27,6 @@ const usePlayer = ({ src, controls, autoplay, socket }) => {
       },
     },
   }
-
-  const videoRef = useRef(null)
-  const [player, setPlayer] = useState(null)
-  const [admins, setAdmins] = useState('')
-  let tes = ''
-
-  // const [currHost, setCurrHost] = useState('AAA')
 
   useEffect(() => {
     const vjsPlayer = videojs(videoRef.current, {
@@ -48,35 +51,54 @@ const usePlayer = ({ src, controls, autoplay, socket }) => {
   // }, [src])
 
   useEffect(() => {
-    console.log('halo')
     if (!socket) return
+    // player.on('progress', () => {})
+    // player.on('seeking', () => {})
+    // player.on('seeked', () => {})
+    // player.on('timeupdate', () => {})
+    socket.on('onPlay', () => player.play())
+    socket.on('onPause', () => player.pause())
 
-    // player.on('progress', function () {
-    //   console.log('progress')
-    //   console.log(player.buffered())
-    //   console.log(player.bufferedPercent())
-    // })
-    player.on('seeking', () => {
-      if (tes === socket.id) {
-        console.log('seek', socket.id || 'adminNull', tes || 'tes')
-        socket.emit('masuk', player.currentTime(), socket.id, tes)
+    player.on('seeked', () => {
+      if (isCurrentUserHost()) {
+        console.log('seeked', socket.id || 'adminNull', hostId || 'hostId')
+        socket.emit('masuk', player.currentTime(), socket.id, hostId)
       }
-      // socket.on('takeAdmin', (name) => console.log(name))
-      // console.log(currentHost)
-      // socket.emit('masuk', player.currentTime(), socket.id)
+    })
+
+    player.on('pause', () => {
+      if (!player.seeking() && isCurrentUserHost()) {
+        socket.emit('pause')
+      }
+    })
+
+    player.on('play', () => {
+      if (isCurrentUserHost()) {
+        socket.emit('play')
+      }
     })
 
     socket.on('broad', (time, id, admin) => {
       console.log({ time: time, host: admin, userSendCommand: id || 'admin null' }, 222)
-      // if (host !== socket.id) {
-      player.currentTime(+time)
-      // }
+      if (hostId !== socket.id) {
+        player.currentTime(+time)
+      }
     })
 
-    socket.on('eventTakeControl', (socketId) => {
-      console.log(socketId)
-      setAdmins(socketId)
-      tes = socketId
+    socket.on('onTakeControl', (valHostId) => {
+      hostId = valHostId
+      /* disable seekbar and play/pause control when current user
+      is not host, and enable seekbar and play/pause control when
+      current user is host. */
+      if (isCurrentUserHost()) {
+        player.controlBar.progressControl.enable()
+        player.controlBar.playToggle.enable()
+        player.el_.firstChild.style.pointerEvents = ''
+      } else {
+        player.controlBar.progressControl.disable()
+        player.controlBar.playToggle.disable()
+        player.el_.firstChild.style.pointerEvents = 'none'
+      }
     })
   }, [socket])
 

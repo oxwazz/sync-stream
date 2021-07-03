@@ -1,0 +1,27 @@
+{
+  "name": "sync-stream",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "pm2": "next start"
+  },
+  "dependencies": {
+    "@videojs/http-streaming": "^2.9.1",
+    "next": "11.0.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "socket.io-client": "^4.1.2",
+    "video.js": "^7.13.3",
+    "videojs-contrib-quality-levels": "^2.1.0",
+    "videojs-hls-quality-selector": "^1.1.4",
+    "videojs-http-source-selector": "^1.1.6"
+  },
+  "devDependencies": {
+    "eslint": "7.29.0",
+    "eslint-config-next": "11.0.1"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "sync-stream",
+      "script": "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+      "args": "start"
+    }
+  ]
+}

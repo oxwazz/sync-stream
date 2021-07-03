@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "tes1",
+      "script": "./server.js",
+      "args": "pm2"
+    }
+  ]
+}

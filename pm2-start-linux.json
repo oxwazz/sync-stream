@@ -1,0 +1,19 @@
+{
+  "apps": [
+    {
+      "name": "server-sync-stream",
+      "cwd": "./server-sync-stream",
+      "script": "./server-sync-stream/server.js",
+      "args": "pm2"
+    },
+    {
+      "name": "app-sync-stream",
+      "cwd": "./sync-stream",
+      "script": "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+      "args": "pm2",
+      "watch": false,
+      "instances": 1,
+      "exec_mode": "cluster"
+    }
+  ]
+}

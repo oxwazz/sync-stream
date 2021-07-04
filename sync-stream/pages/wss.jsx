@@ -5,17 +5,16 @@ import 'video.js/dist/video-js.min.css'
 
 // const socket = io('http://localhost:3003')
 
-// const web_prod = 'http://178.128.52.193'
+// const web_prod = 'http://188.166.204.148'
 // const web_local = 'http://localhost'
 export default function Wss() {
   const [socket, setSocket] = useState(null)
   const [id, setId] = useState('')
   const [admin, setAdmin] = useState('')
-  const [input, setInput] = useState('10')
   const [list, setList] = useState([])
   const [playerRef] = usePlayer({
     src: {
-      src: 'http://178.128.52.193:8080/vod/master.m3u8',
+      src: 'http://188.166.204.148:8080/vod/master.m3u8',
       type: 'application/x-mpegURL',
     },
     controls: true,
@@ -34,15 +33,11 @@ export default function Wss() {
     socket.on('connect', () => setId(socket.id))
     socket.on('onTakeControl', (socketId) => setAdmin(socketId))
 
-    socket.on('broad', (time, host) => {
+    socket.on('onSeeked', (time, host) => {
       console.log(time, host, 111)
       setList((prev) => [...prev, time])
     })
   }, [socket])
-
-  const sendMessage = () => {
-    socket.emit('masuk', input, id, admin)
-  }
 
   const takeControl = () => {
     socket.emit('takeControl', socket.id)
@@ -56,11 +51,6 @@ export default function Wss() {
         <h4 style={{ display: 'inline-block', marginRight: 10 }}>Host: {admin || 'null'}</h4>
         <button onClick={takeControl}>take control</button>
       </div>
-
-      <input type="text" onChange={(e) => setInput(e.target.value)} />
-      <button disabled={id !== '' && id !== admin} onClick={() => sendMessage()}>
-        send
-      </button>
 
       <div data-vjs-player>
         <video ref={playerRef} className="video-js" />

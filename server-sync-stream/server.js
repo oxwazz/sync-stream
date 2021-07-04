@@ -1,29 +1,28 @@
 const server = require('http').createServer()
 const io = require('socket.io')(server, {
   cors: {
-    // origin: 'http://178.128.52.193:3000',
+    // origin: 'http://188.166.204.148:3000',
     origin: 'http://localhost:3000',
   },
 })
-let admin = ''
+let host = ''
 
 io.on('connection', (socket) => {
-  socket.on('masuk', (time, id, admin) => {
-    socket.broadcast.emit('broad', time, id, admin)
-  })
-
-  socket.on('takeControl', (socketId) => {
-    console.log(socketId, 4444)
-    admin = socketId
-    io.emit('onTakeControl', socketId)
+  socket.on('play', () => {
+    socket.broadcast.emit('onPlay')
   })
 
   socket.on('pause', () => {
     socket.broadcast.emit('onPause')
   })
 
-  socket.on('play', () => {
-    socket.broadcast.emit('onPlay')
+  socket.on('seeked', (time) => {
+    socket.broadcast.emit('onSeeked', time)
+  })
+
+  socket.on('takeControl', (socketId) => {
+    host = socketId
+    io.emit('onTakeControl', socketId)
   })
 })
 

@@ -10,6 +10,7 @@ const usePlayer = ({ src, controls, autoplay, socket }) => {
   let hostId = ''
   let userId = ''
 
+  /* check if the current user is a host */
   const isCurrentUserHost = () => {
     if (!socket) return
     return hostId === socket.id
@@ -62,7 +63,7 @@ const usePlayer = ({ src, controls, autoplay, socket }) => {
     player.on('seeked', () => {
       if (isCurrentUserHost()) {
         console.log('seeked', socket.id || 'adminNull', hostId || 'hostId')
-        socket.emit('masuk', player.currentTime(), socket.id, hostId)
+        socket.emit('seeked', player.currentTime())
       }
     })
 
@@ -78,17 +79,16 @@ const usePlayer = ({ src, controls, autoplay, socket }) => {
       }
     })
 
-    socket.on('broad', (time, id, admin) => {
-      console.log({ time: time, host: admin, userSendCommand: id || 'admin null' }, 222)
-      if (hostId !== socket.id) {
+    socket.on('onSeeked', (time) => {
+      if (!isCurrentUserHost()) {
         player.currentTime(+time)
       }
     })
 
     socket.on('onTakeControl', (valHostId) => {
       hostId = valHostId
-      /* disable seekbar and play/pause control when current user
-      is not host, and enable seekbar and play/pause control when
+      /* disable seek, play, and pause control when current user
+      is not host, and enable seek, play, and pause control when
       current user is host. */
       if (isCurrentUserHost()) {
         player.controlBar.progressControl.enable()

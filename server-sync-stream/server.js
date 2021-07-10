@@ -1,8 +1,8 @@
 const server = require('http').createServer()
 const io = require('socket.io')(server, {
   cors: {
-    // origin: 'http://188.166.204.148:3000',
-    origin: 'http://localhost:3000',
+    origin: 'http://188.166.204.148:3000',
+    // origin: 'http://localhost:3000',
   },
 })
 let host = ''

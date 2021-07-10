@@ -35,6 +35,20 @@ const usePlayer = ({ src, controls, autoplay, socket }) => {
       controls,
       autoplay,
       sources: [src],
+      tracks: [
+        {
+          src: 'http://178.128.52.193:8080/elite-s1-e3/Elite-S01-E03.vtt',
+          kind: 'captions',
+          srclang: 'id',
+          label: 'Indonesia',
+        },
+        // {
+        //   src: 'https://kot-politiken.s3-eu-west-1.amazonaws.com/2019/114_en.vtt.txt',
+        //   kind: 'captions',
+        //   srclang: 'en',
+        //   label: 'English',
+        // },
+      ],
     })
     vjsPlayer.httpSourceSelector()
     setPlayer(vjsPlayer)

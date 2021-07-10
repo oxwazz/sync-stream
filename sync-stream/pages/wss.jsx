@@ -14,7 +14,10 @@ export default function Wss() {
   const [list, setList] = useState([])
   const [playerRef] = usePlayer({
     src: {
-      src: 'http://188.166.204.148:8080/vod/master.m3u8',
+      // src: 'http://188.166.204.148:8080/vod/master.m3u8',
+      src: 'http://178.128.52.193:8080/elite-s1-e3/hls/master.m3u8',
+      // src: 'http://165.22.101.235/downloads/teshls/master.m3u8',
+      // src: 'http://165.22.101.235/downloads/Elite.S01E03.SPANISH.WEBRip.x264/master/master.m3u8',
       type: 'application/x-mpegURL',
     },
     controls: true,
@@ -23,8 +26,8 @@ export default function Wss() {
   })
 
   useEffect(() => {
-    // const tes = io('http://178.128.52.193:3003')
-    const tes = io('http://localhost:3003')
+    const tes = io('http://178.128.52.193:3003')
+    // const tes = io('http://localhost:3003')
     setSocket(tes)
   }, [])
 
